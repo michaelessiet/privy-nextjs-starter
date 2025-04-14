@@ -1,17 +1,23 @@
-'use client';
+"use client";
 
-import { ChatRequestOptions, Message } from 'ai';
-import { Button } from './ui/button';
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
-import { Textarea } from './ui/textarea';
-import { deleteTrailingMessages } from '@/app/(chat)/actions';
-import { UseChatHelpers } from '@ai-sdk/react';
+import type { Message } from "ai";
+import { Button } from "./ui/button";
+import {
+  type Dispatch,
+  type SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { Textarea } from "./ui/textarea";
+import { deleteTrailingMessages } from "@/app/(chat)/actions";
+import type { UseChatHelpers } from "@ai-sdk/react";
 
 export type MessageEditorProps = {
   message: Message;
-  setMode: Dispatch<SetStateAction<'view' | 'edit'>>;
-  setMessages: UseChatHelpers['setMessages'];
-  reload: UseChatHelpers['reload'];
+  setMode: Dispatch<SetStateAction<"view" | "edit">>;
+  setMessages: UseChatHelpers["setMessages"];
+  reload: UseChatHelpers["reload"];
 };
 
 export function MessageEditor({
@@ -33,7 +39,7 @@ export function MessageEditor({
 
   const adjustHeight = () => {
     if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = "auto";
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight + 2}px`;
     }
   };
@@ -58,7 +64,7 @@ export function MessageEditor({
           variant="outline"
           className="h-fit py-2 px-3"
           onClick={() => {
-            setMode('view');
+            setMode("view");
           }}
         >
           Cancel
@@ -83,7 +89,7 @@ export function MessageEditor({
                 const updatedMessage = {
                   ...message,
                   content: draftContent,
-                  parts: [{ type: 'text', text: draftContent }],
+                  parts: [{ type: "text", text: draftContent }],
                 };
 
                 return [...messages.slice(0, index), updatedMessage];
@@ -92,11 +98,11 @@ export function MessageEditor({
               return messages;
             });
 
-            setMode('view');
+            setMode("view");
             reload();
           }}
         >
-          {isSubmitting ? 'Sending...' : 'Send'}
+          {isSubmitting ? "Sending..." : "Send"}
         </Button>
       </div>
     </div>
