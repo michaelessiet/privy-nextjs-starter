@@ -1,6 +1,6 @@
 {
-  "name": "ai-chatbot",
-  "version": "3.0.2",
+  "name": "privy-agent-nextjs-starter",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbo",
