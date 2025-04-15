@@ -19,14 +19,12 @@ import {
   getTrailingMessageId,
 } from "@/lib/utils";
 import { generateTitleFromUserMessage } from "../../actions";
-import { createDocument } from "@/lib/ai/tools/create-document";
-import { updateDocument } from "@/lib/ai/tools/update-document";
-import { requestSuggestions } from "@/lib/ai/tools/request-suggestions";
-import { getWeather } from "@/lib/ai/tools/get-weather";
 import { isProductionEnvironment } from "@/lib/constants";
 import { myProvider } from "@/lib/ai/providers";
 import { SolanaAgentKit, createVercelAITools } from "solana-agent-kit";
 import TokenPlugin from "@solana-agent-kit/plugin-token";
+// Commented out due to the 30k token limit for OpenAI tier 1 accounts
+// import MiscPlugin from "@solana-agent-kit/plugin-misc";
 import { privyClient } from "@/lib/privy";
 import { PublicKey } from "@solana/web3.js";
 
@@ -141,6 +139,8 @@ export async function POST(request: Request) {
       process.env.RPC_URL,
       {},
     ).use(TokenPlugin);
+    // Commented out due to the 30k token limit for OpenAI tier 1 accounts
+    // .use(MiscPlugin);
 
     const vercelAITools = createVercelAITools(solanaAgent, solanaAgent.actions);
 
@@ -161,7 +161,7 @@ export async function POST(request: Request) {
       execute: (dataStream) => {
         const result = streamText({
           model: myProvider.languageModel(selectedChatModel),
-          system: systemPrompt({ selectedChatModel }),
+          system: systemPrompt,
           messages,
           maxSteps: 5,
           experimental_transform: smoothStream({ chunking: "word" }),
@@ -215,7 +215,9 @@ export async function POST(request: Request) {
           sendReasoning: true,
         });
       },
-      onError: () => {
+      onError: (e) => {
+        // @ts-expect-error - error type mismatch
+        console.error(e.message);
         return "Oops, an error occurred!";
       },
     });

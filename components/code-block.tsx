@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 interface CodeBlockProps {
   node: any;
@@ -14,7 +14,8 @@ export function CodeBlock({
   children,
   ...props
 }: CodeBlockProps) {
-  if (!inline) {
+  const match = /language-(\w+)/.test(className || "");
+  if (match) {
     return (
       <div className="not-prose flex flex-col">
         <pre
