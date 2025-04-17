@@ -104,7 +104,7 @@ export async function POST(request: Request) {
                 ...tx,
                 signatures: [signedTransaction],
               };
-            }),
+            })
           );
 
           return signedTxs;
@@ -137,7 +137,7 @@ export async function POST(request: Request) {
         },
       },
       process.env.RPC_URL,
-      {},
+      {}
     ).use(TokenPlugin);
     // Commented out due to the 30k token limit for OpenAI tier 1 accounts
     // .use(MiscPlugin);
@@ -172,7 +172,7 @@ export async function POST(request: Request) {
               try {
                 const assistantId = getTrailingMessageId({
                   messages: response.messages.filter(
-                    (message) => message.role === "assistant",
+                    (message) => message.role === "assistant"
                   ),
                 });
 
